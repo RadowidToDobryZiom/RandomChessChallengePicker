@@ -17,7 +17,6 @@ A browser extension for chess.com that allows you to pick random challenge for i
 7. Now all you do is click on the "Load unpacked" button (screenshot), pick a folder (with src name in your case) which you downloaded from github.
 ![image](https://github.com/RadowidToDobryZiom/RandomChessChallengePicker/assets/136258434/743ed9dc-1df1-42c2-87a8-b4d295c96ab8)
 8. Enjoy being able to pick random chess challenge from your viewers. 
-![kotumba](https://github.com/RadowidToDobryZiom/RandomChessChallengePicker/assets/136258434/a5ae20d7-98a3-46df-959b-9abbb7ed451a)
 
 
 
