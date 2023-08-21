@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Radowid Challenge Picker",
+    "name": "Chess.com Challenge Picker",
     "description": "Extensions made by https://www.twitch.tv/radowid_to_dobry_ziom. Allows you to accept random challenges on chess.com website. Couldn't have done this extension without help of: https://www.twitch.tv/patibar3k, https://twitch.tv/ramireztujest, https://twitch.tv/kotim26,  https://twitch.tv/wlochacz_reformed.",
     "version": "1.0",
     "action": {
