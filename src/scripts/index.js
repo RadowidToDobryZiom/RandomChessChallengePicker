@@ -6,10 +6,6 @@ const Main = () => {
     window.location.href.startsWith("https://www.chess.com/game/live")
   ) {
     //RANDOM CHALLENGE BUTTON
-    let space = document.querySelector(
-      ".new-game-index-component.tab-content-component"
-    );
-
     let space2 = document.querySelector(
       ".ui_v5-button-component.ui_v5-button-primary.ui_v5-button-large.ui_v5-button-full"
     );
@@ -20,8 +16,6 @@ const Main = () => {
     if (space2 && !przycisk) {
       button.innerHTML = "Accept random challenge";
       button.classList.add("random-challenge-button");
-      // space.appendChild(button);
-      // space2.insertBefore(button, space2.child);
       space2.insertAdjacentElement("afterend", button);
       button.style.backgroundColor = "#7fa650";
       button.style.borderWidth = "0px";
@@ -34,8 +28,6 @@ const Main = () => {
 
       buttonReset.innerHTML = "Clear the blacklist";
       buttonReset.classList.add("random-challenge-button");
-      // space.appendChild(button);
-      // space2.insertBefore(button, space2.child);
       button.insertAdjacentElement("afterend", buttonReset);
       buttonReset.style.backgroundColor = "#7fa650";
       buttonReset.style.borderWidth = "0px";
@@ -48,43 +40,44 @@ const Main = () => {
     }
 
     button.addEventListener("click", function () {
-      let buttonsNodeList = document.querySelectorAll(
-        ".ui_v5-button-component.ui_v5-button-primary.ui_v5-button-x-small.incoming-challenges-button"
+      let incoming_challenges = document.querySelector(
+        ".incoming-challenges-component"
       );
-      let buttons = Array.from(buttonsNodeList);
 
-      if (buttons.length != 0) {
-        let incoming_challenges = document.querySelector(
-          ".incoming-challenges-middle"
-        );
+      if (incoming_challenges) {
+        let data = Array.from(incoming_challenges.children).map((child) => {
+          return {
+            username: child.children[1].textContent.split("\n")[0],
+            button: child.children[2].children[1],
+          };
+        });
 
-        if (incoming_challenges) {
-          let i = 0;
-          while (i <= buttons.length) {
-            i++;
-            let randomIndex = Math.floor(Math.random() * buttons.length);
-            let username =
-              incoming_challenges.children[randomIndex].children[0].textContent;
-            console.log(username);
-            if (!localStorage.getItem("usernames").includes(username)) {
-              let randomButton = buttons[randomIndex];
-              console.log(username);
-              randomButton.click();
-              let previousData = localStorage.getItem("usernames");
-              localStorage.setItem("usernames", previousData + username + " ");
+        console.log(data);
+        let whitelistedButtons = data.filter((element) => {
+          const blacklist = JSON.parse(localStorage.getItem("usernames")) || [];
+          return !blacklist.includes(element.username);
+        });
 
-              break;
-            }
-            if (i >= buttons.length) {
-              alert("All users are on the blacklist.");
-              return;
-            }
-          }
+        if (whitelistedButtons.length > 0) {
+          const randomIndex = Math.floor(
+            Math.random() * whitelistedButtons.length
+          );
+          blacklist = JSON.parse(localStorage.getItem("usernames")) || [];
 
-          // console.log(username[0].innerTEXT)
+          whitelistedButtons[randomIndex].button.click();
+
+          localStorage.setItem(
+            "usernames",
+            JSON.stringify([
+              ...blacklist,
+              whitelistedButtons[randomIndex].username,
+            ])
+          );
+        } else {
+          alert("No whitelisted challenges available.");
         }
       } else {
-        alert("There are no challenges.");
+        alert("There are no challenges!");
       }
     });
 
@@ -108,20 +101,16 @@ const Main = () => {
       if (localStorage.getItem("usernames") == "") {
         alert("Blacklist is empty");
       } else {
-        localStorage.setItem("usernames", "");
+        localStorage.removeItem("usernames");
         alert("Blacklist cleared");
       }
     });
-    let incoming_challenges = document.querySelector(
-      ".incoming-challenges-middle"
-    );
   }
 };
 
 function handleMutation(mutationsList, observer) {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList" || mutation.type === "attributes") {
-      console.log("DOM CHANGED");
       Main();
     }
   }
